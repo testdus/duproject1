@@ -1,0 +1,61 @@
+{% extends "pizzas/base.html" %}
+{% block content %}
+<h3>Welcome To Pizza Ordering</h3>
+
+<form class="form-horizontal" action="saveView/" method="POST">
+  <div class="form-group">
+    <label for="pizza" class="col-sm-2 control-label">Pizza Name</label>
+    <div class="col-sm-6">
+       <select id="pizza" name="pizza_id" class="form-control">{% for pizza in pizza%}<option value="{{pizza.id}}">{{pizza.name}}</option>
+{% empty %}
+<option></option>
+ {% endfor %}
+</select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="toppings" class="col-sm-2 control-label">Toppings</label>
+    <div class="col-sm-6">
+      <select id="toppings" name="topping_id" class="form-control"></select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="toppings" class="col-sm-2 control-label">Pizza Quantity</label>
+    <div class="col-sm-6">
+      <input type="text" id="qty" name="qty" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Place Order</button>
+    </div>
+  </div>
+</form>
+{% if error != None %}
+{{error}}
+{% endif %}
+<script>
+    $(function(){
+    //check the current pizza and get the toppings
+    function getToppings(){
+     var pizza_value= $('#pizza').val();
+    $.getJSON( "getToppings/"+pizza_value+"/", function( data ) {
+
+    $('#toppings').empty();
+    $.each( data, function( key, val ) {
+    $('#toppings').append('<option value='+val['id']+'>'+val['name']+'</option>');
+  });
+
+  });
+    }
+    getToppings();
+    $('#pizza').change(function(){
+    //alert('you changed');
+    getToppings();
+
+    });
+    });
+
+</script>
+
+{% endblock content %}

@@ -1,0 +1,12 @@
+
+{% extends "pizzas/base.html" %}
+
+{% block content %}
+
+ <h3>Thanks for the order</h3>
+Quantity     : {{message.qty}} <br>
+Total Amount : $ {{message.price}} <br><br>
+
+{{message.message}}
+
+{% endblock content %}
